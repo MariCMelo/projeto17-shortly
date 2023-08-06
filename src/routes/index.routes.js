@@ -1,5 +1,8 @@
-import { Router } from "express"
+import { Router } from "express";
+import signupRouter from "./signup.routes.js";
 
-const router = Router()
+const router = Router();
 
-export default router
+router.use(signupRouter);
+
+export default router;
