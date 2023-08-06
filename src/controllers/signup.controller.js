@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt"
-
 import { db } from "../database/database.connection.js";
 
 export async function signup(req, res) {
@@ -20,7 +19,7 @@ export async function signup(req, res) {
     );
 
     res.status(201).json({ message: "Usuário criado com sucesso!" });
-    
+
   } catch (err) {
     res.status(500).json(err.message);
   }
