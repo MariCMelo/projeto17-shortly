@@ -29,9 +29,9 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.sessions (
     id integer NOT NULL,
-    token text NOT NULL,
-    "userId" integer ,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
+    token text,
+    userId integer NOT NULL,
+    createdat timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -65,10 +65,10 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 CREATE TABLE public.url (
     id integer NOT NULL,
-    "userId" integer,
-    "urlOriginal" text NOT NULL,
-    "urlShort" text NOT NULL,
-    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
+    userId integer NOT NULL,
+    urloriginal text NOT NULL,
+    urlshort text NOT NULL,
+    createdat timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -105,7 +105,7 @@ CREATE TABLE public.users (
     name character varying(256) NOT NULL,
     email character varying(256) NOT NULL,
     password character varying(256) NOT NULL,
-    createdAt timestamp without time zone DEFAULT now() NOT NULL
+    createdat timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -198,7 +198,7 @@ ALTER TABLE ONLY public.users
 --
 
 ALTER TABLE ONLY public.url
-    ADD CONSTRAINT url_fk0 FOREIGN KEY ("userId") REFERENCES public.users(id);
+    ADD CONSTRAINT url_fk0 FOREIGN KEY (userId) REFERENCES public.users(id);
 
 
 --
@@ -207,7 +207,7 @@ ALTER TABLE ONLY public.url
 --
 
 ALTER TABLE ONLY public.sessions
-    ADD CONSTRAINT url_fk0 FOREIGN KEY ("userId") REFERENCES public.users(id);
+    ADD CONSTRAINT url_fk0 FOREIGN KEY (userId) REFERENCES public.users(id);
 
 
 -- Completed on 2023-08-06 14:58:30 -03
@@ -215,4 +215,3 @@ ALTER TABLE ONLY public.sessions
 --
 -- PostgreSQL database dump complete
 --
-
