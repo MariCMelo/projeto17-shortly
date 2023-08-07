@@ -1,6 +1,6 @@
-import { searchSession } from "../controllers/session.controller";
+import { searchSession } from "../controllers/session.controller.js";
 
-export async function validateAuth (res, res, next) {
+export async function validateAuth (req, res, next) {
     const {auth} = req.headers;
 
     const token = auth?.replace("Bearer ", "")

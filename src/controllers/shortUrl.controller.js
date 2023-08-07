@@ -40,3 +40,21 @@ export async function getUrlId(req, res) {
     res.status(500).json(err.message);
   }
 }
+
+export async function openShortUrl(req, res) {
+  const { shortUrl } = req.params;
+
+  try {
+    const result = await db.query(
+      `SELECT "urlOriginal" FROM urls WHERE "urlShort" = $1;`,
+      [shortUrl]
+    );
+
+    const url = result.rows[0];
+    if (!url) {
+      return res.status(404).json({ message: "URL encurtada não encontrada!" });
+    }
+
+    res.redirect(url.rows[0].url);
+  } catch (err) {}
+}
