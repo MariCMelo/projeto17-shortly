@@ -1,7 +1,7 @@
 import { db } from "../database/database.connection.js";
 import { customAlphabet } from "nanoid";
 
-const nanoid = customAlphabet(8);
+const nanoid = customAlphabet('1234567890abcdef', 8);
 
 export async function shortenUrl(req, res) {
   const { url } = req.body;
@@ -9,6 +9,7 @@ export async function shortenUrl(req, res) {
   const shortUrl = nanoid();
 
   try {
+   
     const {
       rows: [result],
     } = await db.query(
@@ -17,7 +18,7 @@ export async function shortenUrl(req, res) {
             RETURNING id, "shortUrl"`,
       [url, shortUrl, userId]
     );
-
+ console.log(result)
     res.status(201).send(result);
   } catch (err) {
     res.status(500).send(err.message);
