@@ -1,10 +1,12 @@
 import { db } from "../database/database.connection.js";
-import { nanoid } from "nanoid";
+import { customAlphabet, urlAlphabet } from 'nanoid'
 
 export async function shortenUrl(req, res) {
   const { url } = req.body;
   const { userId } = res.locals;
-  const shortUrl = nanoid();
+  
+  const nanoid = customAlphabet(urlAlphabet, 10);
+  const shortUrl = nanoid(8);
 
   try {
     const {
