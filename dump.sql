@@ -74,8 +74,8 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 CREATE TABLE public.urls (
     id integer NOT NULL,
     "userId" integer,
-    "urlOriginal" text NOT NULL,
-    "urlShort" text,
+    url text NOT NULL,
+    "shortUrl" text,
     "createdAt" timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     "urlVisit" integer
 );
