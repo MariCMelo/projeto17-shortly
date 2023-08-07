@@ -1,5 +1,6 @@
 import { db } from "../database/database.connection.js";
-import { customAlphabet } from 'nanoid'
+import { customAlphabet } from "nanoid";
+
 const nanoid = customAlphabet(8);
 
 export async function shortenUrl(req, res) {
@@ -8,7 +9,9 @@ export async function shortenUrl(req, res) {
   const shortUrl = nanoid();
 
   try {
-    const { rows:[result] } = await db.query(
+    const {
+      rows: [result],
+    } = await db.query(
       `INSERT INTO urls (url, "shortUrl", "userId") 
             VALUES ($1, $2, $3) 
             RETURNING id, "shortUrl"`,
