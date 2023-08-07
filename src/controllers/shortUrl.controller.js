@@ -71,9 +71,10 @@ export async function openShortUrl(req, res) {
 }
 
 export async function deleteUrl(req, res) {
-  const { id } = req.params;
+  const id = req.params.id;
   const { userId } = res.locals;
 
+  console.log(id)
   try {
     const result = await db.query(
       `SELECT id FROM urls WHERE id = $1 AND "userId" = $2;`,
