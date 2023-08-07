@@ -11,12 +11,7 @@ import { validateAuth } from "../middlewares/validateAuth.js";
 
 const shortUrlRouter = Router();
 
-shortUrlRouter.post(
-  "/urls/shorten",
-  validateSchema(urlSchema),
-  validateAuth,
-  shortenUrl
-);
+shortUrlRouter.post("/urls/shorten", validateAuth, validateSchema(urlSchema), shortenUrl);
 shortUrlRouter.get("/urls/:id", getUrlId);
 shortUrlRouter.get("/urls/open/:shortUrl", openShortUrl);
 shortUrlRouter.delete("/urls/:id", deleteUrl);
