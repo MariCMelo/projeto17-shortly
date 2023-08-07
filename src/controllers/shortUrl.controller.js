@@ -1,27 +1,36 @@
 import { db } from "../database/database.connection.js";
 import { customAlphabet, urlAlphabet } from 'nanoid'
 
+
+
 export async function shortenUrl(req, res) {
   const { url } = req.body;
   const { userId } = res.locals;
-  
-  const nanoid = customAlphabet(urlAlphabet, 10);
-  const shortUrl = nanoid(8);
+
+  const nanoidGenerator = customAlphabet(urlAlphabet, 8);
+  const shortUrl = nanoidGenerator();
 
   try {
-    const {
-      rows: [result],
-    } = await db.query(
+    const { rows } = await db.query(
       `INSERT INTO urls (url, "shortUrl", "userId") 
-                  VALUES ($1, $2, $3) 
-                  RETURNING id, "shortUrl"`,
+      VALUES ($1, $2, $3) 
+      ON CONFLICT (url) DO NOTHING
+      RETURNING id, "shortUrl";`,
       [url, shortUrl, userId]
     );
-    res.status(201).send(result);
+
+    if (rows.length === 0) {
+      return res.status(409).send({ message: 'URL já cadastrada.' });
+    }
+
+    const { id } = rows[0];
+    res.status(201).send({ id, shortUrl });
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
+
+
 
 export async function getUrlId(req, res) {
   const { id } = req.params;
