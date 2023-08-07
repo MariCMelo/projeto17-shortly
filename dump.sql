@@ -77,7 +77,7 @@ CREATE TABLE public.urls (
     url text NOT NULL,
     "shortUrl" text,
     "createdAt" timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    "urlVisit" integer
+    "visitCount" integer
 );
 
 

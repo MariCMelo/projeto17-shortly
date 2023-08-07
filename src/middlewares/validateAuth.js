@@ -1,16 +1,31 @@
-import { searchSession } from "../controllers/session.controller.js";
+import { db } from "../database/database.connection.js";
 
-export async function validateAuth (req, res, next) {
-    const {auth} = req.headers;
+export async function validateAuth(req, res, next) {
+  const { authorization } = req.headers;
 
-    const token = auth?.replace("Bearer ", "")
-    if (!token) return res.sendStatus(401)
+  const token = authorization?.replace("Bearer ", "");
+  if (!token) {
+    return res.status(401).json({ message: "Token não fornecido." });
+  }
 
-    try {
-        const session = await searchSession(token)
-        if (session.rowCount === 0) return res.sendStatus(401)
-        res.locals.userId = session.rows[0].userId
-    } catch (err) {
-        res.status(500).send(err)
+  try {
+    const session = await db.query(
+      `
+        SELECT user_id AS "userId" 
+        FROM sessions
+        WHERE token = $1;
+      `,
+      [token]
+    );
+
+    if (session.rowCount === 0) {
+      return res.status(401).json({ message: "Token inválido." });
     }
+
+    res.locals.userId = session.rows[0].userId;
+
+    next();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
